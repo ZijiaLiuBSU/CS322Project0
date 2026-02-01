@@ -101,15 +101,26 @@ void print_this_user_info(unsigned short userindex, char username[],
 bool get_user_preference() {
     char buffer[256] = "";          /* read from the keyboard */
     int selection = 0;              /* user's choice */
-    /* print a menu for the 2 options */
-    printf("Make a simple menu here.  Enter stuff: ");  // you should edit this line
-    /* read input from keyboard using fgets() and sscanf() with %d */
-    fgets(buffer, sizeof(buffer), stdin);
-    sscanf(buffer, "%d", &selection);
-    /* if they entered 1, return true */
-    /* if they entered anything else, return false (default option is secure) */
-    return false; // you will edit this line, too
+
+    /* (a) print a simple menu */
+    printf("Choose mode:\n");
+    printf("  1) Run vulnerable code\n");
+    printf("  2) Run secure code (default)\n");
+    printf("Enter choice: ");
+
+    /* (b) read input from keyboard using fgets() and sscanf() with %d */
+    if (fgets(buffer, sizeof(buffer), stdin) != NULL) {
+        sscanf(buffer, "%d", &selection);
+    }
+
+    /* (c) if the user enters 1, return true; (d) otherwise return false */
+    if (selection == 1) {
+        return true;
+    }
+    return false;
 }
+
+
 
 /* TODO: WRITE THIS FUNCTION */
 /* Purpose:  Read from the keyboard.
