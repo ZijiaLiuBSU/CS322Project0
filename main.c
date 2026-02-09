@@ -1,5 +1,5 @@
 /* Project 0 - Input Validation and Buffer Overruns
- * Author: TODO: add your name here
+ * Author: TODO: Zijia Liu
  * Purpose: create a program that does not validate input and leads to a buffer
  *          overflow, and allows memory to directly accessed.  Also, write
  *          more secure versions of the functions that do not have these
@@ -74,10 +74,10 @@ int main(void) {
 
         /* if the user chose to live dangerously and run vulnerable functions */
         if (vulnerable_mode) {
-            /* prompt user for which user they want to work with */
+            /* prompt user for which user they want to work with, using get_user_to_modify_vulnerable() */
             user_index = get_user_to_modify_vulnerable();
 
-            /* prompt user for new PIN (no validation here - intentionally vulnerable) */
+            /* prompt user for new PIN (intentionally no validation here) */
             printf("Enter new PIN (decimal): ");
             if (fgets(buffer, sizeof(buffer), stdin) == NULL) {
                 exit(0);
