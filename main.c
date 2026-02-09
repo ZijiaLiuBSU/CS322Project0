@@ -153,13 +153,34 @@ void change_pin_vulnerable(int user_i, unsigned short u_pin[], int new_pin) {
  *           Verify that value entered is valid. Re-prompt until satisfied.
  * Returns:  the (validated) integer index that the user wants to modify. */
 int get_user_to_modify_more_secure(int current_num_users) {
-    /* loop, unless they type EXIT_VALUE */
-    /* read input from keyboard using fgets() and sscanf() with %d */
-    /* quit the program, if the user entered the EXIT_VALUE */
-    /* perform input validation on the user's input */
-    /* if valid, return the answer */
-    /* otherwise, print an error message and loop to reprompt the user */
-    return -1; // you will edit this line, too
+    char buffer[256] = "";
+    int desired_index = -1;
+
+    while (true) {
+        printf("Enter user index to modify (0 - %d) or %d to quit: ",
+               current_num_users - 1, EXIT_VALUE);
+
+        if (fgets(buffer, sizeof(buffer), stdin) == NULL) {
+            printf("Input error. Try again.\n");
+            continue;
+        }
+
+        if (sscanf(buffer, "%d", &desired_index) != 1) {
+            printf("Invalid input. Please enter a number.\n");
+            continue;
+        }
+
+        if (desired_index == EXIT_VALUE) {
+            exit(0);
+        }
+
+        if (desired_index < 0 || desired_index >= current_num_users) {
+            printf("Invalid user index. Try again.\n");
+            continue;
+        }
+
+        return desired_index;
+    }
 }
 
 /* TODO:  WRITE THIS FUNCTION */
