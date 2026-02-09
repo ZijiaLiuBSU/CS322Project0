@@ -7,4 +7,5 @@ set(CMAKE_C_STANDARD_REQUIRED ON)
 
 add_executable(CS322Project0
         main.c
+        main.c
 )
