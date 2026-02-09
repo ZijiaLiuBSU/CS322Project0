@@ -1,5 +1,5 @@
 /* Project 0 - Input Validation and Buffer Overruns
- * Author: TODO: add your name here
+ * Author: TODO: Zijia Liu
  * Purpose: create a program that does not validate input and leads to a buffer
  *          overflow, and allows memory to directly accessed.  Also, write
  *          more secure versions of the functions that do not have these
@@ -57,8 +57,9 @@ int main(void) {
     /******* does the user want to run vulnerable code? *******/
     vulnerable_mode = get_user_preference();
 
-    /* TODO:  Write this part */
     /******* loop so that we have a chance to do fun things *******/
+    while (true) {
+
         /* print out this information (info leak, but helps us learn) */
         for (i = 0; i < num_users; i++) {
             print_this_user_info(i, user_data.user_name[i],
@@ -68,14 +69,29 @@ int main(void) {
 
         /******* Execute vulnerable code, or not, depending on user choice *******/
         /* if the user chose to live dangerously and run vulnerable functions */
+        if (vulnerable_mode) {
             /* prompt user for which user they want to work with, using get_user_to_modify_vulnerable() */
-            /* prompt user for new PIN (this can be a function you create, or just put the code directly here */
+            user_index = get_user_to_modify_vulnerable();
+
+            /* prompt user for new PIN (intentionally no validation here) */
+            printf("Enter new PIN (decimal): ");
+            if (fgets(buffer, sizeof(buffer), stdin) == NULL) {
+                exit(0);
+            }
+            sscanf(buffer, "%d", &new_pin);
+
             /* change the pin using the function, change_pin_vulnerable */
+            change_pin_vulnerable(user_index, user_data.user_pin, new_pin);
+        }
         /* otherwise, if the user did not want to risk it, and chose to run the more secure functions */
-            /* prompt user for which user they want to work with, using get_user_to_modify_more_secure() */
-            /* prompt user for new PIN (this can be a function you create, or just put the code directly here */
-            /* change the pin using the function, change_pin_more_secure */
-    /* end of loop */
+        else {
+            printf("Secure mode is not implemented on the vulnerable-functions branch.\n");
+            printf("Switch to the more-secure-functions branch for that part.\n");
+            exit(0);
+        }
+
+        printf("\n");
+    }
 
     /* exit program */
     return 0;
@@ -120,23 +136,28 @@ bool get_user_preference() {
     return false;
 }
 
-
-
-/* TODO: WRITE THIS FUNCTION */
 /* Purpose:  Read from the keyboard.
  *           No input validation is done in this function, so it is vulnerable.
  * Returns:  The (unvalidated) integer index that the user wants to modify. */
 int get_user_to_modify_vulnerable(void) {
     char buffer[256] = "";          /* read from the keyboard */
-    int  desired_index = 0;         /* index of user to modify */
-    /* prompt the user to enter the desired index */
-    /* read input from keyboard using fgets() and sscanf() with %d */
-    /* quit program if desired */
-    /* otherwise, return the result */
-    return -1;  // you will edit this line, too
+    int desired_index = 0;          /* index of user to modify */
+
+    printf("Enter user index to modify (or %d to quit): ", EXIT_VALUE);
+
+    if (fgets(buffer, sizeof(buffer), stdin) == NULL) {
+        exit(0);
+    }
+
+    sscanf(buffer, "%d", &desired_index);
+
+    if (desired_index == EXIT_VALUE) {
+        exit(0);
+    }
+
+    return desired_index;
 }
 
-/* TODO:  WRITE THIS FUNCTION */
 /* Purpose: When passed the user's index number (user_i),
  *          the entire pin array (u_pin[]), and
  *          the new pin (new_pin),
@@ -144,8 +165,7 @@ int get_user_to_modify_vulnerable(void) {
  *          Do not do any input validation in this intentionally vulnerable function.
  * Returns: nothing, but may have some vulnerabilities */
 void change_pin_vulnerable(int user_i, unsigned short u_pin[], int new_pin) {
-    /* TODO: modify the desired u_pin, which can be done on one line. */
-    // does not return a value, so no return statement needed
+    u_pin[user_i] = (unsigned short)new_pin;
 }
 
 /* TODO:  WRITE THIS FUNCTION */
